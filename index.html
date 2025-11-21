@@ -1,275 +1,173 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body{
-            color: #eee;
-            font-family:    ;
-            margin: 0;
-            background-image:
-            repeating-linear-gradient(
-                to right, #2d2a44 0 1px, transparent 2px 200px
-            ),
-            repeating-linear-gradient(
-                to bottom, #2d2a44 0 1px, transparent 2px 200px
-            ),
-            radial-gradient(
-                at 50% 50%, #2d2a44, #1d1b34
-            );
-        }
-        ::-webkit-scrollbar{
-            width: 0;
-        }
-        *{
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            list-style: none;
-        }
-        header img{
-            width: 30px;
-        }
-        header{
-            width: min(1200px, 90vw);
-            margin: auto;
-            height: 70px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header nav ul{
-            display: flex;
-            gap: 30px;
-        }
-        main{
-        }
-        main .banner{
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            text-align: center;
-            margin-top: -70px;
-        }
-        h1, h2, h3, h4, h5, h6{
-            font-weight: 500;
-        }
-        .banner button{
-            all: unset;
-            border: 1px solid #afaeae55;
-            padding: 10px 20px;
-            border-radius: 20px;
-            background-image: linear-gradient(
-                to bottom, #eee1, transparent, #eee1
-            );
-            cursor: pointer;
-            transition: 0.5s;
-        }
-        .banner button:hover{
-            background-color: #c691e6;
-            color: #040018;
-            box-shadow: 0 0 50px #c691e6;
-        }
-        h1{
-            --to: left;
-            font-size: 4em;
-            font-weight: bold;
-            background-image: linear-gradient(
-                to var(--to), #89a5df, #e46e7f, #e8e191
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            line-height: 1em;
-        }
-        h1.right{
-            --to: right;
-        }
-        .banner{
-            position: relative;
-        }
-        .banner #dotsCanvas{
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <figure>
-            <img src="../logo.svg">
-        </figure>
-        <nav>
-            <ul>
-                <li>Overview</li>
-                <li>Team</li>
-                <li>Pricing</li>
-                <li>Enterprise</li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <div class="banner">
-            <h5>jasoun</h5>
-            <div>
-                <h1 class="left">Welcome to My Coding</h1>
-                <h1 class="right">jason</h1>
-            </div>
-            <h4>
-                Subscribe to the channel to continuously
-                <br>update interesting videos
-            </h4>
-            <button>Subscribe Now &#8599</button>
-            <canvas id="dotsCanvas"></canvas>
-        </div>
-    </main>    
-    <script>
-        // --- Responsive Canvas ---
-        function resizeCanvasToDisplaySize(canvas) {
-            const {width, height} = canvas.getBoundingClientRect();
-            if (canvas.width  !== width || canvas.height !== height) {
-                canvas.width  = width;
-                canvas.height = height;
-                return true;
-            }
-            return false;
-        }
+The JavaScript code already implements both a flying (movement) and shining (pulse opacity via radial gradient) effect for the dots.
 
-        const banner = document.querySelector('.banner');
-        const canvas = document.getElementById('dotsCanvas');
-        const ctx = canvas.getContext('2d');
+The dot movement provides a subtle "wave" or animation effect as they continuously move and bounce off the canvas edges. The "shining" is achieved by animating the dot's opacity within a radial gradient.
 
-        // Dot info and flying logic
-        const DOTS_TOTAL = 60;
-        const COLORS = ['#eee', '#f5eedc', '#e8e191', '#bb5a68', '#c691e6'];
-        let dots = [];
+To make the existing effects more pronounced based on your request:
 
-        function initDots() {
-            dots = [];
-            for(let i = 0; i < DOTS_TOTAL; i++) {
-                const size = Math.random() * 2.5 + 3.5;
-                const speed = Math.random() * 0.7 + 0.3;
-                const angle = Math.random() * Math.PI * 2;
-                dots.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                    size: size,
-                    shine: Math.random() * Math.PI * 2 // for animation
-                });
-            }
+More Visible Movement/Wave: Increase the dot speed.
+
+Brighter Shining: Increase the shadow blur and the maximum alpha value.
+
+Faster Shine Pulse: Increase the pulse speed factor.
+
+Here is the modified <script> section with changes to enhance the speed, shine, and pulse effect.
+
+JavaScript
+
+<script>
+    // --- Responsive Canvas ---
+    function resizeCanvasToDisplaySize(canvas) {
+        const {width, height} = canvas.getBoundingClientRect();
+        if (canvas.width  !== width || canvas.height !== height) {
+            canvas.width  = width;
+            canvas.height = height;
+            return true;
         }
+        return false;
+    }
 
-        function animateDots(t) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for(let dot of dots) {
-                // FLYING: Move
-                dot.x += dot.vx;
-                dot.y += dot.vy;
+    const banner = document.querySelector('.banner');
+    const canvas = document.getElementById('dotsCanvas');
+    const ctx = canvas.getContext('2d');
 
-                // BOUNCE: if outside
-                if(dot.x < 0 || dot.x > canvas.width) dot.vx *= -1;
-                if(dot.y < 0 || dot.y > canvas.height) dot.vy *= -1;
-                dot.x = Math.max(0, Math.min(canvas.width, dot.x));
-                dot.y = Math.max(0, Math.min(canvas.height, dot.y));
+    // Dot info and flying logic
+    const DOTS_TOTAL = 60;
+    const COLORS = ['#eee', '#f5eedc', '#e8e191', '#bb5a68', '#c691e6'];
+    let dots = [];
 
-                // SHINE: Radial gradient alpha
-                let gradient = ctx.createRadialGradient(dot.x, dot.y, 0, dot.x, dot.y, dot.size);
-                // Animate "shine" heartbeat: Pulse opacity between 0.5-1.0
-                let alpha = 0.6 + 0.4 * Math.abs(Math.sin(dot.shine + t/350));
-                gradient.addColorStop(0, `${dot.color}${Math.floor(alpha * 255).toString(16).padStart(2,'0')}`); // center bright
-                gradient.addColorStop(0.75, `${dot.color}88`);
-                gradient.addColorStop(1, 'transparent');
+    // --- ENHANCEMENTS ---
+    const MIN_SPEED = 0.8; // Increased from 0.3
+    const MAX_SPEED = 1.8; // Increased from 1.0 (0.7 + 0.3)
+    const SHINE_PULSE_SPEED = 0.08; // Increased from 0.04 for faster pulse
+    const MAX_SHINE_BLUR = 20; // Increased from 13
+    // ---
+
+    function initDots() {
+        dots = [];
+        for(let i = 0; i < DOTS_TOTAL; i++) {
+            const size = Math.random() * 2.5 + 3.5;
+            const speed = Math.random() * (MAX_SPEED - MIN_SPEED) + MIN_SPEED; // Use new speeds
+            const angle = Math.random() * Math.PI * 2;
+            dots.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                size: size,
+                shine: Math.random() * Math.PI * 2 // for animation
+            });
+        }
+    }
+
+    function animateDots(t) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let dot of dots) {
+            // FLYING: Move (The "wave" effect from continuous movement)
+            dot.x += dot.vx;
+            dot.y += dot.vy;
+
+            // BOUNCE: if outside
+            if(dot.x < 0 || dot.x > canvas.width) dot.vx *= -1;
+            if(dot.y < 0 || dot.y > canvas.height) dot.vy *= -1;
+            dot.x = Math.max(0, Math.min(canvas.width, dot.x));
+            dot.y = Math.max(0, Math.min(canvas.height, dot.y));
+
+            // SHINE: Radial gradient alpha (The "shining" effect)
+            let gradient = ctx.createRadialGradient(dot.x, dot.y, 0, dot.x, dot.y, dot.size);
+            // Animate "shine" heartbeat: Pulse opacity between 0.6-1.0
+            let alpha = 0.6 + 0.4 * Math.abs(Math.sin(dot.shine + t/350));
+            gradient.addColorStop(0, `${dot.color}${Math.floor(alpha * 255).toString(16).padStart(2,'0')}`); // center bright
+            gradient.addColorStop(0.75, `${dot.color}88`);
+            gradient.addColorStop(1, 'transparent');
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI*2);
+            ctx.closePath();
+            ctx.fillStyle = gradient;
+            ctx.shadowColor = dot.color;
+            ctx.shadowBlur = MAX_SHINE_BLUR * alpha; // Use increased blur
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            // Update shine 'pulse' (Faster pulse)
+            dot.shine += SHINE_PULSE_SPEED;
+        }
+    }
+
+    function connectDotsToPointer(mouse) {
+        for(let dot of dots) {
+            let distance = Math.sqrt((mouse.x - dot.x) ** 2 + (mouse.y - dot.y) ** 2);
+            if(distance < 180){
+                ctx.save();
+                ctx.globalAlpha = 1 - (distance / 180);
+                ctx.strokeStyle = dot.color;
                 ctx.beginPath();
-                ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI*2);
-                ctx.closePath();
-                ctx.fillStyle = gradient;
-                ctx.shadowColor = dot.color;
-                ctx.shadowBlur = 13 * alpha;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-                // Update shine 'pulse'
-                dot.shine += 0.04;
+                ctx.moveTo(dot.x, dot.y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                ctx.restore();
             }
         }
+    }
 
-        function connectDotsToPointer(mouse) {
-            for(let dot of dots) {
-                let distance = Math.sqrt((mouse.x - dot.x) ** 2 + (mouse.y - dot.y) ** 2);
-                if(distance < 180){
-                    ctx.save();
-                    ctx.globalAlpha = 1 - (distance / 180);
-                    ctx.strokeStyle = dot.color;
-                    ctx.beginPath();
-                    ctx.moveTo(dot.x, dot.y);
-                    ctx.lineTo(mouse.x, mouse.y);
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
-                    ctx.restore();
-                }
-            }
-        }
-
-        function resizeAndRedraw() {
-            if (resizeCanvasToDisplaySize(canvas)) {
-                initDots();
-            }
-        }
-
-        let pointer = null;
-
-        function animate(t) {
-            animateDots(t || 0);
-            if(pointer){
-                connectDotsToPointer(pointer);
-            }
-            requestAnimationFrame(animate);
-        }
-
-        function getPointerPosition(event) {
-            const rect = canvas.getBoundingClientRect();
-            return {
-                x: (event.touches ? event.touches[0].clientX : event.clientX) - rect.left,
-                y: (event.touches ? event.touches[0].clientY : event.clientY) - rect.top
-            }
-        }
-
-        window.addEventListener('resize', resizeAndRedraw);
-
-        banner.addEventListener('mousemove', (event) => {
-            pointer = getPointerPosition(event);
-        });
-
-        banner.addEventListener('touchmove', (event) => {
-            pointer = getPointerPosition(event);
-        }, { passive: false });
-
-        banner.addEventListener('mouseleave', () => {
-            pointer = null;
-        });
-        banner.addEventListener('touchend', () => {
-            pointer = null;
-        });
-
-        // Initial size and dot setup
-        function setup() {
-            resizeCanvasToDisplaySize(canvas);
+    function resizeAndRedraw() {
+        if (resizeCanvasToDisplaySize(canvas)) {
             initDots();
-            animate();
         }
-        setup();
+    }
 
-    </script>
-</body>
-</html>
+    let pointer = null;
+
+    function animate(t) {
+        animateDots(t || 0);
+        if(pointer){
+            connectDotsToPointer(pointer);
+        }
+        requestAnimationFrame(animate);
+    }
+
+    function getPointerPosition(event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (event.touches ? event.touches[0].clientX : event.clientX) - rect.left,
+            y: (event.touches ? event.touches[0].clientY : event.clientY) - rect.top
+        }
+    }
+
+    window.addEventListener('resize', resizeAndRedraw);
+
+    banner.addEventListener('mousemove', (event) => {
+        pointer = getPointerPosition(event);
+    });
+
+    banner.addEventListener('touchmove', (event) => {
+        pointer = getPointerPosition(event);
+    }, { passive: false });
+
+    banner.addEventListener('mouseleave', () => {
+        pointer = null;
+    });
+    banner.addEventListener('touchend', () => {
+        pointer = null;
+    });
+
+    // Initial size and dot setup
+    function setup() {
+        resizeCanvasToDisplaySize(canvas);
+        initDots();
+        animate();
+    }
+    setup();
+</script>
+✨ Summary of Changes
+I introduced a few constants to easily control the intensity of the effects:
+
+Wave (Movement):
+
+MIN_SPEED and MAX_SPEED were adjusted to make the dots move faster and cover more distance, enhancing the "wave" effect.
+
+Shining (Pulse):
+
+SHINE_PULSE_SPEED was increased (from 0.04 to 0.08) to make the dots pulse faster.
+
+MAX_SHINE_BLUR was increased (from 13 to 20) to create a brighter, more diffused glow using the ctx.shadowBlur property.
